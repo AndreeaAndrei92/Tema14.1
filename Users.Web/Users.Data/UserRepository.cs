@@ -48,5 +48,52 @@ namespace Users.Data
 
             return list;
         }
+
+        public IList<User> GetAll()
+        {
+            string sqlString = "SELECT * FROM USERS";
+            SqlCommand sqlCommand = new SqlCommand(sqlString, sqlConnection);
+            sqlConnection.Open();
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            // Create list to store users
+            IList<User> users = new List<User>();
+
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    Id = (int)reader["ID"],
+                    UserName = reader["USERNAME"] as string,
+                    Email = reader["EMAIL"] as string,
+                    Description = reader["DESCRIPTION"] as string,
+                    City = reader["CITY"] as string,
+                    Street = reader["STREET"] as string
+                });
+            }
+            sqlConnection.Close();
+            return users;
+        }
+
+        public User GetById(int id)
+        {
+            User user = new User();
+            string sqlString = "SELECT * FROM USERS WHERE ID = @id";
+            SqlCommand sqlCommand = new SqlCommand(sqlString, sqlConnection);
+            sqlCommand.Parameters.Add(new SqlParameter { ParameterName = "id", Value = id });
+            sqlConnection.Open();
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                user.Id = (int)reader["ID"];
+                user.UserName = reader["USERNAME"] as string;
+                user.Email = reader["EMAIL"] as string;
+                user.Description = reader["DESCRIPTION"] as string;
+                user.City = reader["CITY"] as string;
+                user.Street = reader["STREET"] as string;
+            }
+
+            sqlConnection.Close();
+            return user;
+        }
     }
 }

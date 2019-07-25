@@ -1,0 +1,48 @@
+﻿@using Students.Web.Models
+@model Students.Web.Models.UserViewModel
+
+@{
+    if (Model == null)
+    {
+        ViewBag.Title = "Add new user";
+        <h2>Add new user</h2>
+    }
+    else
+    {
+        ViewBag.Title = $"Edit user {Model.UserName}";
+        <h2>Edit user @Model.UserName</h2>
+    }
+}
+
+<div>
+    @using (Html.BeginForm("Add", "User", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName)
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address.City)
+            @Html.EditorFor(model => model.Address.City, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address.City, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address.Street)
+            @Html.EditorFor(model => model.Address.Street, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address.Street, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.HiddenFor(x => x.Id);
+
+        <input type="submit" />
+    }
+</div>
